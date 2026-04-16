@@ -56,7 +56,7 @@ export default function Header() {
       <div className="flex items-center justify-between px-6 py-4 md:py-5">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <img src="images/logo.png" alt="Logo" className="md:w-28 w-16" />
+          <img src="/images/logo.png" alt="Logo" className="md:w-28 w-16" />
         </Link>
 
         {/* Navigation Desktop */}

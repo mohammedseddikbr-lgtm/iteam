@@ -43,5 +43,3 @@ export const Home = () => {
     </div>
   );
 };
-
-// ParticlesFlottants moved to a separate dynamically loaded component to reduce initial bundle

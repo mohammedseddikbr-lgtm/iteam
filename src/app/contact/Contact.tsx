@@ -8,24 +8,16 @@ import {
   Phone, 
   MapPin, 
   Clock, 
-  Globe, 
   Send,
   MessageCircle,
   Calendar,
   Users,
-  Shield,
-  Zap,
-  ArrowRight,
-  Sparkles,
   X,
   CheckCircle,
   Loader2,
   Building,
-  Mailbox,
   PhoneCall,
   Video,
-  Coffee,
-  Twitter,
   Facebook,
   Instagram,
   Linkedin
@@ -35,6 +27,9 @@ import { GradientText } from "@/components/ui/GradientText";
 import { GlowingButton } from "@/components/ui/GlowingButton";
 import { TechBackground } from "@/components/ui/TechBackground";
 import { CustomDropdown } from "./components/CustomDropDown";
+
+// رابط Google Sheets Webhook
+const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzEhym5RcwdnLMIHnz3LfgHH_cnEyH91pg1OolbVkGJ5LGDzj-s16wCRIZk5nInlGHp/exec";
 
 export const Contact = () => {
   const [formData, setFormData] = useState({
@@ -51,39 +46,70 @@ export const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // دالة لإرسال البيانات إلى Google Sheets
+  const sendToGoogleSheets = async (data: any) => {
+    try {
+      const response = await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          timestamp: new Date().toLocaleString('fr-FR'),
+          name: data.name,
+          email: data.email,
+          company: data.company || '',
+          phone: data.phone || '',
+          service: data.service || '',
+          message: data.message,
+          budget: data.budget || '',
+          status: 'Nouveau'
+        }),
+      });
+      
+      return { success: true };
+    } catch (error) {
+      console.error('Google Sheets Error:', error);
+      throw error;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
 
     try {
-      // Envoi de l'email via l'API Resend
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          company: formData.company,
-          phone: formData.phone,
-          service: formData.service,
-          message: formData.message,
-          budget: formData.budget
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Erreur lors de l\'envoi de l\'email');
+      // إرسال البيانات إلى Google Sheets
+      await sendToGoogleSheets(formData);
+      
+      // محاولة إرسال الإيميل إذا كان متاحاً (اختياري)
+      try {
+        const emailResponse = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            company: formData.company,
+            phone: formData.phone,
+            service: formData.service,
+            message: formData.message,
+            budget: formData.budget
+          }),
+        });
+      } catch (emailError) {
+        // تجاهل خطأ الإيميل، المهم هو Google Sheets
+        console.log('Email service not available, but Google Sheets works');
       }
 
       setIsSubmitting(false);
       setIsSubmitted(true);
 
-      // Réinitialiser le formulaire après 5 secondes
+      // إعادة تعيين النموذج بعد 5 ثواني
       setTimeout(() => {
         setIsSubmitted(false);
         setFormData({
@@ -99,7 +125,7 @@ export const Contact = () => {
 
     } catch (error: any) {
       console.error('Erreur:', error);
-      setError(error.message || 'Une erreur est survenue. Veuillez réessayer.');
+      setError('Une erreur est survenue. Veuillez réessayer.');
       setIsSubmitting(false);
     }
   };
@@ -323,9 +349,9 @@ export const Contact = () => {
                 <h3 className="font-bold text-white mb-4">Suivez-nous</h3>
                 <div className="flex items-center gap-4">
                   {[
-                    { icon: <Facebook className="w-5 h-5" />, label: "Facebook", url: "facebook.com/iteam.digital" },
-                    { icon: <Instagram className="w-5 h-5" />, label: "Instagram", url: "instagram.com/iteam.dz" },
-                    { icon: <Linkedin className="w-5 h-5" />, label: "LinkedIn", url: "linkedin.com/company/iteam-digital" }
+                    { icon: <Facebook className="w-5 h-5" />, label: "Facebook", url: "https://facebook.com/iteam.digital" },
+                    { icon: <Instagram className="w-5 h-5" />, label: "Instagram", url: "https://instagram.com/iteam.dz" },
+                    { icon: <Linkedin className="w-5 h-5" />, label: "LinkedIn", url: "https://linkedin.com/company/iteam-digital" }
                   ].map((social, idx) => (
                     <motion.a
                       key={idx}
