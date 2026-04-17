@@ -140,7 +140,7 @@ export const Contact = () => {
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Téléphone",
-      value: "+213 549 402 461",
+      value: "+213 796 779 790",
       subtitle: "Dimanche-Jeudi, 8h-16h",
       color: "from-blue-500 to-cyan-500"
     },
@@ -310,7 +310,7 @@ export const Contact = () => {
                 ))}
               </div>
 
-              {/* Additional Info */}
+              {/* Additional Info - تم تعديل زر Planifier un Appel */}
               <div className="space-y-6">
                 <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 backdrop-blur-xl border border-blue-500/20">
                   <div className="flex items-center gap-4 mb-4">
@@ -322,25 +322,16 @@ export const Contact = () => {
                       <p className="text-sm text-gray-400">Nous vous répondons sous 2 heures</p>
                     </div>
                   </div>
-                  <button className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold hover:opacity-90 transition-opacity">
-                    Planifier un Appel
-                  </button>
+                  {/* زر الاتصال المباشر */}
+                  <a 
+                    href="tel:+213796779790"
+                    className="block w-full py-3 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold text-center hover:opacity-90 transition-opacity"
+                  >
+                    Appeler Maintenant
+                  </a>
                 </div>
 
-                <div className="p-6 rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-xl border border-purple-500/20">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
-                      <Video className="w-6 h-6 text-pink-400" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-white">Réunion Virtuelle</h3>
-                      <p className="text-sm text-gray-400">Consultation gratuite de 30 minutes</p>
-                    </div>
-                  </div>
-                  <button className="w-full py-3 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity">
-                    Réserver une Réunion
-                  </button>
-                </div>
+                {/* قسم Réserver une Réunion - تمت إزالته بالكامل */}
               </div>
 
               {/* Social Links */}
@@ -545,7 +536,7 @@ export const Contact = () => {
                     </div>
                   </div>
 
-                  {/* ✅ تم التصحيح هنا - استخدمنا motion.button بدلاً من GlowingButton */}
+                  {/* Submit button */}
                   <div className="pt-4">
                     <button 
                       type="submit"
@@ -634,11 +625,14 @@ export const Contact = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                   <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                    +213 549 402 461
+                    +213 796 779 790
                   </div>
-                  <button className="px-8 py-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+                  <a 
+                    href="tel:+213796779790"
+                    className="px-8 py-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                  >
                     Appeler Maintenant
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>

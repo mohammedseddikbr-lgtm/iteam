@@ -4,7 +4,6 @@
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 const TechBackground = dynamic(() => import('@/components/ui/TechBackground').then(mod => mod.TechBackground), { ssr: false, loading: () => null });
 const FloatingParticles = dynamic(() => import('@/app/Portfolio/components/FloatingParticles').then(mod => mod.FloatingParticles), { ssr: false, loading: () => null });
@@ -12,7 +11,6 @@ const FloatingParticles = dynamic(() => import('@/app/Portfolio/components/Float
 import {
   Code2,
   Palette,
-  Camera,
   TrendingUp,
   Users,
   Video,
@@ -27,16 +25,14 @@ import {
   Stethoscope,
   Facebook,
   Instagram,
-  PenTool,
   Layout,
-  Package,
   Award,
-  ExternalLink
+  ExternalLink,
+  Zap
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { GradientText } from "@/components/ui/GradientText";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 
 // Types
 type ProjectCategory = "web" | "design" | "marketing" | "video" | "social";
@@ -55,13 +51,24 @@ interface PortfolioProject {
   fullDescription: string;
   technologies?: string[];
   link?: string;
+  features?: string[];
 }
 
-// Composant pour afficher une image avec fallback
+// Composant pour l'image de la carte
 const ProjectImage = ({ src, alt, color }: { src: string; alt: string; color: string }) => {
   const [imgError, setImgError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    const img = new window.Image();
+    img.src = src;
+    img.onload = () => setIsLoading(false);
+    img.onerror = () => {
+      setImgError(true);
+      setIsLoading(false);
+    };
+  }, [src]);
+
   if (imgError) {
     return (
       <div className={cn(
@@ -79,10 +86,10 @@ const ProjectImage = ({ src, alt, color }: { src: string; alt: string; color: st
   }
 
   return (
-    <>
+    <div className="relative w-full h-full">
       {isLoading && (
         <div className={cn(
-          "absolute inset-0 flex items-center justify-center",
+          "absolute inset-0 flex items-center justify-center z-10",
           `bg-gradient-to-br ${color}`
         )}>
           <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
@@ -91,22 +98,30 @@ const ProjectImage = ({ src, alt, color }: { src: string; alt: string; color: st
       <img
         src={src}
         alt={alt}
-        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-        onLoad={() => setIsLoading(false)}
-        onError={() => {
-          setImgError(true);
-          setIsLoading(false);
-        }}
+        className={cn(
+          "w-full h-full object-cover transition-all duration-700",
+          isLoading ? "opacity-0 scale-105" : "opacity-100 scale-100 group-hover:scale-110"
+        )}
       />
-    </>
+    </div>
   );
 };
 
-// Composant pour la modale avec image
+// Composant pour l'image de la modale
 const ModalImage = ({ src, alt, color }: { src: string; alt: string; color: string }) => {
   const [imgError, setImgError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    const img = new window.Image();
+    img.src = src;
+    img.onload = () => setIsLoading(false);
+    img.onerror = () => {
+      setImgError(true);
+      setIsLoading(false);
+    };
+  }, [src]);
+
   if (imgError) {
     return (
       <div className={cn(
@@ -124,10 +139,10 @@ const ModalImage = ({ src, alt, color }: { src: string; alt: string; color: stri
   }
 
   return (
-    <>
+    <div className="relative w-full h-full bg-gray-900">
       {isLoading && (
         <div className={cn(
-          "absolute inset-0 flex items-center justify-center",
+          "absolute inset-0 flex items-center justify-center z-10",
           `bg-gradient-to-br ${color}`
         )}>
           <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
@@ -136,14 +151,12 @@ const ModalImage = ({ src, alt, color }: { src: string; alt: string; color: stri
       <img
         src={src}
         alt={alt}
-        className="w-full h-full object-cover"
-        onLoad={() => setIsLoading(false)}
-        onError={() => {
-          setImgError(true);
-          setIsLoading(false);
-        }}
+        className={cn(
+          "w-full h-full object-contain transition-all duration-500",
+          isLoading ? "opacity-0" : "opacity-100"
+        )}
       />
-    </>
+    </div>
   );
 };
 
@@ -154,19 +167,46 @@ const ImageIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+// Composant CheckIcon
+const CheckIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+  </svg>
+);
+
 export const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState<PortfolioProject | null>(null);
   const [filterCategory, setFilterCategory] = useState<ProjectCategory | "all">("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Préchargement des images
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = projects.map((project) => {
+        return new Promise((resolve) => {
+          const img = new window.Image();
+          img.src = project.imageUrl;
+          img.onload = () => resolve(true);
+          img.onerror = () => resolve(false);
+        });
+      });
+      await Promise.all(imagePromises);
+    };
+    preloadImages();
+  }, []);
+
+  // Gestion du scroll quand la modale est ouverte
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('modal-open');
     } else {
       document.body.style.overflow = 'unset';
+      document.body.classList.remove('modal-open');
     }
     return () => {
       document.body.style.overflow = 'unset';
+      document.body.classList.remove('modal-open');
     };
   }, [isModalOpen]);
 
@@ -180,37 +220,53 @@ export const Portfolio = () => {
     setTimeout(() => setSelectedProject(null), 300);
   };
 
-  // ========== VOS PROJETS RÉELS ==========
+  // ========== PROJETS ==========
   const projects: PortfolioProject[] = [
     {
       id: 1,
       title: "Store B2B - CSM Taksit",
       category: "web",
       categoryName: "Développement Web",
-      description: "Plateforme B2B avec système de paiement en plusieurs fois",
+      description: "Plateforme B2B e-commerce avec système de paiement échelonné",
       icon: <ShoppingBag className="w-8 h-8" />,
       color: "from-blue-500 to-cyan-500",
       imageUrl: "/images/store-b2b.jpg",
       client: "CSM Taksit",
       year: "2024",
-      technologies: ["Next.js", "Node.js", "MongoDB", "Stripe"],
-      fullDescription: "Plateforme e-commerce B2B complète permettant aux professionnels d'acheter en ligne avec un système de paiement échelonné (taksit). Interface intuitive et sécurisée.",
-      link: "https://b2b.csmtaksit.dz/"
+      technologies: ["WordPress", "WooCommerce", "PHP", "MySQL", "Custom Plugins", "REST API"],
+      fullDescription: "Plateforme e-commerce B2B complète développée avec WordPress et WooCommerce. Solution sur mesure permettant aux professionnels d'acheter en ligne avec un système de paiement échelonné (taksit). Interface intuitive, catalogue produits avancé, gestion des stocks en temps réel et suivi des commandes.",
+      link: "https://b2b.csmtaksit.dz/",
+      features: [
+        "Système de paiement en plusieurs fois (Taksit)",
+        "Catalogue produits B2B",
+        "Gestion des stocks temps réel",
+        "Multi-devises et taux personnalisés",
+        "Export factures et devis",
+        "Dashboard fournisseur"
+      ]
     },
     {
       id: 2,
       title: "Plateforme Médicale i-doc",
       category: "web",
       categoryName: "Développement Web",
-      description: "Plateforme de gestion médicale pour professionnels de santé",
+      description: "Plateforme de téléconsultation et gestion médicale",
       icon: <Stethoscope className="w-8 h-8" />,
       color: "from-purple-500 to-pink-500",
       imageUrl: "/images/i-doc.png",
       client: "i-doc",
       year: "2024",
-      technologies: ["React", "Laravel", "MySQL", "WebRTC"],
-      fullDescription: "Plateforme médicale complète pour la gestion des patients, rendez-vous, dossiers médicaux et téléconsultation.",
-      link: "https://i-doc.com"
+      technologies: ["React.js", "Laravel", "MySQL", "WebRTC", "Tailwind CSS", "RESTful API"],
+      fullDescription: "Application web moderne de téléconsultation et gestion médicale. Interface utilisateur réactive avec React.js et backend robuste avec Laravel. Permet aux médecins de gérer leurs patients, consultations, dossiers médicaux et téléconsultations en visioconférence sécurisée.",
+      link: "https://i-doc.com",
+      features: [
+        "Téléconsultation en visio (WebRTC)",
+        "Gestion des dossiers patients",
+        "Prise de rendez-vous en ligne",
+        "Ordonnances et prescriptions digitales",
+        "Chat sécurisé médecin-patient",
+        "Tableau de bord analytique"
+      ]
     },
     {
       id: 3,
@@ -223,9 +279,17 @@ export const Portfolio = () => {
       imageUrl: "/images/groupe-rahmani.png",
       client: "Groupe Rahmani",
       year: "2024",
-      technologies: ["Facebook", "Instagram", "LinkedIn"],
-      fullDescription: "Gestion complète des réseaux sociaux du Groupe Rahmani : création de contenu, planification, community management et reporting.",
-      link: "https://facebook.com/grouperahmani"
+      technologies: ["Meta Business Suite", "Canva", "Later", "Hootsuite", "Google Analytics"],
+      fullDescription: "Gestion complète des réseaux sociaux du Groupe Rahmani : création de contenu, planification éditoriale, community management, modération et reporting mensuel. Stratégie de contenu adaptée à chaque plateforme.",
+      link: "https://facebook.com/grouperahmani",
+      features: [
+        "Stratégie de contenu mensuelle",
+        "Création de visuels professionnels",
+        "Community management 24/7",
+        "Campagnes publicitaires ciblées",
+        "Rapports d'analyse détaillés",
+        "Veille concurrentielle"
+      ]
     },
     {
       id: 4,
@@ -238,9 +302,17 @@ export const Portfolio = () => {
       imageUrl: "/images/csm-taksit-social.png",
       client: "CSM Taksit",
       year: "2024",
-      technologies: ["Facebook", "Instagram", "Meta Ads"],
-      fullDescription: "Stratégie de contenu et community management pour CSM Taksit, avec campagnes publicitaires ciblées.",
-      link: "https://facebook.com/csmtaksit"
+      technologies: ["Meta Ads", "Instagram Business", "Facebook Creator Studio", "Buffer"],
+      fullDescription: "Stratégie de contenu et community management pour CSM Taksit. Gestion des pages Facebook et Instagram, création de publications engageantes, campagnes publicitaires ciblées pour promouvoir les offres de financement.",
+      link: "https://facebook.com/csmtaksit",
+      features: [
+        "Planning éditorial mensuel",
+        "Création de contenu visuel",
+        "Modération et interaction",
+        "Campagnes Meta Ads",
+        "Analyse des performances",
+        "Rapports hebdomadaires"
+      ]
     },
     {
       id: 5,
@@ -253,68 +325,64 @@ export const Portfolio = () => {
       imageUrl: "/images/ems-algerie.png",
       client: "EMS Algérie",
       year: "2024",
-      technologies: ["Instagram", "Facebook", "LinkedIn"],
-      fullDescription: "Gestion complète des réseaux sociaux d'EMS Algérie, avec création de contenu et stratégie d'engagement.",
-      link: "https://instagram.com/emsalgerie"
+      technologies: ["Instagram", "Facebook", "LinkedIn", "Sprout Social", "Google Analytics"],
+      fullDescription: "Gestion complète des réseaux sociaux d'EMS Algérie. Création de contenu visuel et textuel, stratégie d'engagement, campagnes publicitaires, reporting mensuel et analyse des KPIs.",
+      link: "https://www.facebook.com/officielleEMSCHAMPIONPOSTALGERIA",
+      features: [
+        "Gestion multi-plateformes",
+        "Création de contenus premium",
+        "Stratégie d'engagement",
+        "Campagnes publicitaires",
+        "E-réputation monitoring",
+        "Analyses et recommandations"
+      ]
     },
     {
       id: 6,
-      title: "Branding - Groupe Rahmani",
-      category: "design",
-      categoryName: "Design Graphique",
-      description: "Identité visuelle complète du groupe",
-      icon: <PenTool className="w-8 h-8" />,
-      color: "from-green-500 to-emerald-500",
-      imageUrl: "/images/branding-rahmani.png",
-      client: "Groupe Rahmani",
-      year: "2024",
-      technologies: ["Illustrator", "Photoshop", "Figma"],
-      fullDescription: "Création de l'identité visuelle complète du Groupe Rahmani : logo, charte graphique, papeterie et supports marketing."
-    },
-    {
-      id: 7,
-      title: "Design Packaging - CSM",
-      category: "design",
-      categoryName: "Design Graphique",
-      description: "Packaging produits et emballages",
-      icon: <Package className="w-8 h-8" />,
-      color: "from-lime-500 to-green-500",
-      imageUrl: "/images/packaging-csm.png",
-      client: "CSM Taksit",
-      year: "2024",
-      technologies: ["Illustrator", "InDesign"],
-      fullDescription: "Design de packaging pour la gamme de produits CSM Taksit, avec un design moderne et attractif."
-    },
-    {
-      id: 8,
       title: "Affiches Publicitaires",
       category: "design",
       categoryName: "Design Graphique",
-      description: "Création d'affiches et flyers",
+      description: "Création d'affiches et flyers pour campagnes marketing",
       icon: <Layout className="w-8 h-8" />,
       color: "from-yellow-500 to-orange-500",
       imageUrl: "/images/affiches.png",
       client: "EMS Algérie",
       year: "2024",
-      technologies: ["Photoshop", "Illustrator"],
-      fullDescription: "Création d'affiches publicitaires, flyers et supports print pour les campagnes marketing."
+      technologies: ["Adobe Photoshop", "Adobe Illustrator", "InDesign", "Figma"],
+      fullDescription: "Création d'affiches publicitaires, flyers et supports print pour les campagnes marketing d'EMS Algérie. Designs modernes et percutants adaptés aux différents supports.",
+      features: [
+        "Affiches publicitaires",
+        "Flyers et brochures",
+        "Bannières web",
+        "Supports print",
+        "Adaptation multi-formats",
+        "Charte graphique cohérente"
+      ]
     },
     {
-      id: 9,
+      id: 7,
       title: "UI/UX - Plateforme i-doc",
       category: "design",
       categoryName: "Design Graphique",
-      description: "Design d'interface utilisateur",
+      description: "Design d'interface utilisateur pour plateforme médicale",
       icon: <Award className="w-8 h-8" />,
       color: "from-purple-500 to-indigo-500",
       imageUrl: "/images/ui-ux-idoc.png",
       client: "i-doc",
       year: "2024",
-      technologies: ["Figma", "Adobe XD"],
-      fullDescription: "Design UI/UX complet pour la plateforme médicale i-doc, avec une interface claire et intuitive pour les médecins et patients."
+      technologies: ["Figma", "Adobe XD", "Miro", "Whimsical", "Illustrator"],
+      fullDescription: "Design UI/UX complet pour la plateforme médicale i-doc. Création de wireframes, prototypes interactifs, design system et tests utilisateurs. Interface claire et intuitive pour médecins et patients.",
+      features: [
+        "Wireframes et prototypes",
+        "Design system complet",
+        "Tests utilisateurs",
+        "Accessibilité (WCAG)",
+        "Responsive design",
+        "Animations UI"
+      ]
     },
     {
-      id: 10,
+      id: 8,
       title: "Campagne Publicitaire EMS",
       category: "marketing",
       categoryName: "Marketing Digital",
@@ -324,9 +392,17 @@ export const Portfolio = () => {
       imageUrl: "/images/campagne-ems.png",
       client: "EMS Algérie",
       year: "2024",
-      technologies: ["Meta Ads", "Google Ads", "Analytics"],
-      fullDescription: "Campagne publicitaire sur Facebook et Instagram pour promouvoir les services d'EMS Algérie. Résultats : +200% d'engagement et +150% de leads.",
-      link: "https://facebook.com/emsalgerie"
+      technologies: ["Meta Ads Manager", "Google Ads", "Google Analytics", "Hotjar", "SEMrush"],
+      fullDescription: "Campagne publicitaire sur Facebook et Instagram pour promouvoir les services d'EMS Algérie. Stratégie d'audience ciblée, créations publicitaires A/B testées, optimisation continue et reporting détaillé.",
+      link: "https://www.facebook.com/reel/3060308457474091",
+      features: [
+        "Audience ciblée",
+        "Créations A/B testées",
+        "Optimisation continue",
+        "Budget management",
+        "Reporting détaillé",
+        "ROI mesurable"
+      ]
     }
   ];
 
@@ -368,7 +444,8 @@ export const Portfolio = () => {
       <TechBackground />
       <FloatingParticles />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 pt-32">
+      {/* Supprimé le z-10 pour éviter les conflits */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 pt-32">
         
         {/* HEADER */}
         <div className="text-center mb-16">
@@ -459,15 +536,15 @@ export const Portfolio = () => {
             <p className="text-gray-400">Aucun projet dans cette catégorie pour le moment</p>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
                 onClick={() => openModal(project)}
-                className="group cursor-pointer rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-blue-500/30 transition-all duration-300 hover:shadow-xl"
+                className="group cursor-pointer rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-blue-500/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
               >
                 <div className={cn(
-                  "h-48 relative overflow-hidden",
+                  "h-64 relative overflow-hidden",
                   `bg-gradient-to-br ${project.color}`
                 )}>
                   <ProjectImage 
@@ -475,22 +552,36 @@ export const Portfolio = () => {
                     alt={project.title} 
                     color={project.color}
                   />
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                    <Maximize2 className="w-6 h-6 text-white" />
-                    <span className="text-white text-sm">Voir détails</span>
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
+                    <Maximize2 className="w-8 h-8 text-white" />
+                    <span className="text-white font-medium">Voir détails</span>
                   </div>
                 </div>
-                <div className="p-5">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">
+                <div className="p-6">
+                  <div className="flex items-start justify-between mb-3">
+                    <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
                       {project.title}
                     </h3>
-                    <span className="text-xs text-gray-500">{project.year}</span>
+                    <span className="text-sm text-gray-500 bg-white/5 px-2 py-1 rounded-full">
+                      {project.year}
+                    </span>
                   </div>
-                  <p className="text-sm text-gray-400 mb-3">{project.description}</p>
-                  <div className="flex items-center justify-between text-xs">
+                  <p className="text-gray-400 mb-4">{project.description}</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.technologies?.slice(0, 3).map((tech, idx) => (
+                      <span key={idx} className="text-xs px-2 py-1 rounded-full bg-white/5 text-cyan-400">
+                        {tech}
+                      </span>
+                    ))}
+                    {project.technologies && project.technologies.length > 3 && (
+                      <span className="text-xs px-2 py-1 rounded-full bg-white/5 text-gray-400">
+                        +{project.technologies.length - 3}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
                     <span className={cn(
-                      "px-2 py-1 rounded-full",
+                      "px-3 py-1 rounded-full font-medium",
                       `bg-gradient-to-r ${project.color} bg-clip-text text-transparent`
                     )}>
                       {project.categoryName}
@@ -503,113 +594,135 @@ export const Portfolio = () => {
           </div>
         )}
 
-        {/* MODALE */}
+        {/* MODALE - Z-INDEX CORRIGÉ - Supprimé le pointer-events-none du container */}
         <AnimatePresence>
           {isModalOpen && selectedProject && (
             <>
+              {/* Overlay avec z-index très élevé */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[200]"
+                className="fixed inset-0 bg-black/80 backdrop-blur-md"
+                style={{ zIndex: 99999 }}
                 onClick={closeModal}
               />
               
-              <div className="fixed inset-0 z-[201] flex items-center justify-center p-4 pointer-events-none">
+              {/* Modal Container */}
+              <div 
+                className="fixed inset-0 flex items-center justify-center p-4 md:p-6"
+                style={{ zIndex: 100000 }}
+              >
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9, y: 20 }}
                   transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                  className="relative max-w-2xl w-full max-h-[80vh] overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl border border-white/20 shadow-2xl pointer-events-auto"
+                  className="relative max-w-5xl w-full max-h-[90vh] overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl border border-white/20 shadow-2xl"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <button
                     onClick={closeModal}
-                    className="absolute top-3 right-3 z-10 p-1.5 rounded-full bg-black/50 hover:bg-black/70 transition-colors backdrop-blur-sm"
+                    className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/60 hover:bg-black/80 transition-colors backdrop-blur-sm text-white"
                   >
-                    <X className="w-4 h-4 text-white" />
+                    <X className="w-5 h-5" />
                   </button>
 
-                  <div className={cn(
-                    "h-64 relative overflow-hidden",
-                    `bg-gradient-to-br ${selectedProject.color}`
-                  )}>
-                    <ModalImage 
-                      src={selectedProject.imageUrl} 
-                      alt={selectedProject.title} 
-                      color={selectedProject.color}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
-                    
-                    <div className="absolute bottom-3 left-3 flex gap-2">
-                      <span className={cn(
-                        "text-xs font-semibold px-2 py-1 rounded-full backdrop-blur-md bg-black/50 text-white"
-                      )}>
-                        {selectedProject.categoryName}
-                      </span>
-                      <span className="text-xs text-white backdrop-blur-md bg-black/50 px-2 py-1 rounded-full">
-                        <Clock className="w-3 h-3 inline mr-1" />
-                        {selectedProject.year}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-5 overflow-y-auto max-h-[calc(80vh-16rem)]">
-                    <h2 className="text-xl font-bold text-white mb-1">{selectedProject.title}</h2>
-                    <div className="flex items-center gap-2 text-sm text-gray-400 mb-4">
-                      <Briefcase className="w-4 h-4" />
-                      <span>{selectedProject.client}</span>
-                    </div>
-
-                    <div className="mb-4">
-                      <p className="text-gray-300 text-sm leading-relaxed">
-                        {selectedProject.fullDescription}
-                      </p>
-                    </div>
-
-                    {selectedProject.technologies && selectedProject.technologies.length > 0 && (
-                      <div className="mb-5">
-                        <h3 className="text-sm font-semibold text-white mb-2">Technologies</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {selectedProject.technologies.map((tech, idx) => (
-                            <span
-                              key={idx}
-                              className="px-2 py-1 text-xs rounded-lg bg-white/5 border border-white/10 text-cyan-400"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
+                  <div className="flex flex-col md:flex-row h-full">
+                    {/* Partie image */}
+                    <div className={cn(
+                      "md:w-1/2 h-80 md:h-auto relative overflow-hidden",
+                      `bg-gradient-to-br ${selectedProject.color}`
+                    )}>
+                      <ModalImage 
+                        src={selectedProject.imageUrl} 
+                        alt={selectedProject.title} 
+                        color={selectedProject.color}
+                      />
+                      <div className="absolute bottom-4 left-4 flex gap-2">
+                        <span className={cn(
+                          "text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-md bg-black/60 text-white"
+                        )}>
+                          {selectedProject.categoryName}
+                        </span>
+                        <span className="text-xs text-white backdrop-blur-md bg-black/60 px-3 py-1 rounded-full flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {selectedProject.year}
+                        </span>
                       </div>
-                    )}
+                    </div>
 
-                    {/* Boutons - Avec lien conditionnel */}
-                    <div className="flex flex-col gap-3 mt-4">
-                      {/* Lien vers le projet (s'affiche seulement si le projet a un lien) */}
-                      {selectedProject.link && (
-                        <a
-                          href={selectedProject.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full py-2.5 text-center text-sm rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          Visiter le site web
-                        </a>
+                    {/* Partie contenu */}
+                    <div className="md:w-1/2 p-6 overflow-y-auto max-h-[calc(90vh-2rem)]">
+                      <h2 className="text-2xl font-bold text-white mb-2">{selectedProject.title}</h2>
+                      <div className="flex items-center gap-2 text-sm text-gray-400 mb-4 pb-4 border-b border-white/10">
+                        <Briefcase className="w-4 h-4" />
+                        <span>{selectedProject.client}</span>
+                      </div>
+
+                      <div className="mb-5">
+                        <p className="text-gray-300 leading-relaxed">
+                          {selectedProject.fullDescription}
+                        </p>
+                      </div>
+
+                      {selectedProject.features && selectedProject.features.length > 0 && (
+                        <div className="mb-5">
+                          <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                            <Zap className="w-4 h-4 text-cyan-400" />
+                            Fonctionnalités principales
+                          </h3>
+                          <div className="grid grid-cols-2 gap-2">
+                            {selectedProject.features.map((feature, idx) => (
+                              <div key={idx} className="flex items-center gap-2 text-xs text-gray-400">
+                                <CheckIcon className="w-3 h-3 text-green-400" />
+                                <span>{feature}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       )}
-                      
-                      {/* Bouton Devis */}
-                      <Link href="/contact" onClick={closeModal}>
-                        <Button
-                          
-                          className="w-full py-2.5 text-center text-sm"
-                        >
-                          <span className="flex items-center justify-center gap-2">
+
+                      {selectedProject.technologies && selectedProject.technologies.length > 0 && (
+                        <div className="mb-6">
+                          <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                            <Code2 className="w-4 h-4 text-cyan-400" />
+                            Technologies utilisées
+                          </h3>
+                          <div className="flex flex-wrap gap-2">
+                            {selectedProject.technologies.map((tech, idx) => (
+                              <span
+                                key={idx}
+                                className="px-3 py-1.5 text-xs rounded-lg bg-white/10 border border-white/10 text-cyan-400 font-medium"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Boutons */}
+                      <div className="flex flex-col gap-3 mt-6 pt-4 border-t border-white/10">
+                        {selectedProject.link && (
+                          <a
+                            href={selectedProject.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full py-3 text-center text-sm rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                            Visiter le site web
+                          </a>
+                        )}
+                        
+                        <Link href="/contact" onClick={closeModal} className="w-full">
+                          <button className="w-full py-3 text-center text-sm rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
                             <Send className="w-4 h-4" />
                             Demander un devis
-                          </span>
-                        </Button>
-                      </Link>
+                          </button>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -620,17 +733,15 @@ export const Portfolio = () => {
 
         {/* CTA */}
         <div className="text-center mt-20">
-          <div className="p-8 rounded-2xl bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-white/10">
-            <h2 className="text-2xl font-bold mb-3">
+          <div className="p-10 rounded-2xl bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-white/10">
+            <h2 className="text-3xl font-bold mb-4">
               Vous avez un projet similaire ?
             </h2>
-            <p className="text-gray-400 mb-6">
+            <p className="text-gray-400 mb-8 max-w-xl mx-auto">
               Discutons de votre idée et créons quelque chose ensemble
             </p>
             <Link href="/contact">
-              <button
-                className="inline-flex px-6 py-2"
-              >
+              <button className="inline-flex px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold hover:opacity-90 transition-all duration-300 hover:scale-105 active:scale-95 text-lg">
                 Contactez-nous
               </button>
             </Link>

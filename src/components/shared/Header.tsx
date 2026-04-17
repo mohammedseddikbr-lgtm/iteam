@@ -35,7 +35,7 @@ export default function Header() {
   const liensNavigation = [
     { nom: "Accueil", href: "/", icone: <Home className="w-4 h-4" /> },
     { nom: "Services", href: "/services", icone: <LayoutGrid className="w-4 h-4" /> },
-    { nom: "Portfolio", href: "/portfolio", icone: <Briefcase className="w-4 h-4" /> },
+    { nom: "Portfolio", href: "/Portfolio", icone: <Briefcase className="w-4 h-4" /> },
     { nom: "À Propos", href: "/about", icone: <Info className="w-4 h-4" /> },
     { nom: "Contact", href: "/contact", icone: <MessageCircle className="w-4 h-4" /> },
   ];

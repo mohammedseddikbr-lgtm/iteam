@@ -1,9 +1,9 @@
 // components/pages/sections/services/ServicesCTA.tsx
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Zap, ArrowRight } from "lucide-react";
-
 
 export const ServicesCTA = () => {
   return (
@@ -29,13 +29,15 @@ export const ServicesCTA = () => {
               <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
                 Discutons de la manière dont nos services peuvent vous aider à atteindre vos objectifs digitaux.
               </p>
-              <button className="relative px-8 py-4 text-lg font-semibold rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25">
-                <span className="relative z-10 flex items-center gap-3">
-                  Commencer Votre Projet Aujourd'hui
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </button>
+              <Link href="/contact">
+                <button className="relative px-8 py-4 text-lg font-semibold rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 text-white overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25 cursor-pointer">
+                  <span className="relative z-10 flex items-center gap-3">
+                    Commencer Votre Projet Aujourd'hui
+                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </button>
+              </Link>
             </div>
           </div>
         </motion.div>
@@ -43,3 +45,5 @@ export const ServicesCTA = () => {
     </section>
   );
 };
+
+export default ServicesCTA;

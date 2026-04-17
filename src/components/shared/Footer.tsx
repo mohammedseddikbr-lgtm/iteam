@@ -60,8 +60,8 @@ export default function Footer() {
   const infosContact = [
     {
       icon: Phone,
-      texte: "+213 549 402 461",
-      href: "tel:+213549402461",
+      texte: "+213 796 779 790",
+      href: "tel:+213796779790",
     },
     {
       icon: Mail,
