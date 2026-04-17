@@ -940,31 +940,8 @@ export const About = () => {
             </motion.div>
           </div>
 
-          {/* Section Équipe - COMMENTÉE (Masquée temporairement) */}
-          {/*
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="mb-20 md:mb-32"
-          >
-            <div className="text-center mb-16">
-              <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-                Notre <GradientText>Équipe Passionnée</GradientText>
-              </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Une équipe de professionnels dévoués à transformer votre vision en réalité digitale
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {membresEquipe.map((membre, idx) => (
-                ...
-              ))}
-            </div>
-          </motion.div>
-          */}
-
+          {/* Section Équipe - SUPPRIMÉE (pas seulement commentée) */}
+          
           {/* Valeurs */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -1089,7 +1066,7 @@ export const About = () => {
                     </div>
                   </div>
 
-                  {/* Contact info - NUMÉRO MODIFIÉ */}
+                  {/* Contact info */}
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
                       <Phone className="w-5 h-5 text-gray-400" />
