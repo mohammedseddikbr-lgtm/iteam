@@ -1,6 +1,17 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import LegalPage from "@/components/LegalPage";
 
 export default function CookiesPage() {
+  const [currentDate, setCurrentDate] = useState<string>("");
+  const [currentYear, setCurrentYear] = useState<number>(2024);
+
+  useEffect(() => {
+    setCurrentDate(new Date().toLocaleDateString('fr-FR'));
+    setCurrentYear(new Date().getFullYear());
+  }, []);
+
   return (
     <LegalPage
       title="Politique des Cookies"
@@ -16,7 +27,9 @@ export default function CookiesPage() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white">Information importante</h3>
-                <p className="text-cyan-300 text-sm">Dernière mise à jour: {new Date().toLocaleDateString('fr-FR')}</p>
+                <p className="text-cyan-300 text-sm">
+                  Dernière mise à jour: {currentDate || "Chargement..."}
+                </p>
               </div>
             </div>
             <p className="text-gray-300 leading-relaxed">
@@ -261,7 +274,7 @@ export default function CookiesPage() {
                         <path d="M19 4h-4.18C14.4 2.84 13.3 2 12 2c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"/>
                       </svg>
                       <span className="text-white font-medium">
-                        Version 2.1 • {new Date().getFullYear()}
+                        Version 2.1 • {currentYear}
                       </span>
                     </div>
                   </div>
