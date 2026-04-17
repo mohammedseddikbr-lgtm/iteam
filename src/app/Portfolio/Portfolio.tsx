@@ -30,12 +30,13 @@ import {
   PenTool,
   Layout,
   Package,
-  Award
+  Award,
+  ExternalLink
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { GradientText } from "@/components/ui/GradientText";
-import { GlowingButton } from "@/components/ui/GlowingButton";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 // Types
 type ProjectCategory = "web" | "design" | "marketing" | "video" | "social";
@@ -146,7 +147,7 @@ const ModalImage = ({ src, alt, color }: { src: string; alt: string; color: stri
   );
 };
 
-// Composant ImageIcon manquant
+// Composant ImageIcon
 const ImageIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -181,154 +182,153 @@ export const Portfolio = () => {
 
   // ========== VOS PROJETS RÉELS ==========
   const projects: PortfolioProject[] = [
-  {
-    id: 1,
-    title: "Store B2B - CSM Taksit",
-    category: "web",
-    categoryName: "Développement Web",
-    description: "Plateforme B2B avec système de paiement en plusieurs fois",
-    icon: <ShoppingBag className="w-8 h-8" />,
-    color: "from-blue-500 to-cyan-500",
-    imageUrl: "/images/store-b2b.jpg",
-    client: "CSM Taksit",
-    year: "2024",
-    technologies: ["Next.js", "Node.js", "MongoDB", "Stripe"],
-    fullDescription: "Plateforme e-commerce B2B complète permettant aux professionnels d'acheter en ligne avec un système de paiement échelonné (taksit).",
-    link: "https://b2b.csmtaksit.dz/"
-  },
-  {
-    id: 2,
-    title: "Plateforme Médicale i-doc",
-    category: "web",
-    categoryName: "Développement Web",
-    description: "Plateforme de gestion médicale pour professionnels de santé",
-    icon: <Stethoscope className="w-8 h-8" />,
-    color: "from-purple-500 to-pink-500",
-    imageUrl: "/images/i-doc.png",
-    client: "i-doc",
-    year: "2024",
-    technologies: ["React", "Laravel", "MySQL", "WebRTC"],
-    fullDescription: "Plateforme médicale complète pour la gestion des patients, rendez-vous, dossiers médicaux et téléconsultation.",
-    link: "https://i-doc.com"
-  },
-  {
-    id: 3,
-    title: "Groupe Rahmani",
-    category: "social",
-    categoryName: "Community Management",
-    description: "Gestion des réseaux sociaux et stratégie de contenu",
-    icon: <Users className="w-8 h-8" />,
-    color: "from-blue-600 to-blue-800",
-    imageUrl: "/images/groupe-rahmani.png",
-    client: "Groupe Rahmani",
-    year: "2024",
-    technologies: ["Facebook", "Instagram", "LinkedIn"],
-    fullDescription: "Gestion complète des réseaux sociaux du Groupe Rahmani : création de contenu, planification, community management et reporting.",
-    link: "https://facebook.com/grouperahmani"
-  },
-  {
-    id: 4,
-    title: "CSM Taksit - Social Media",
-    category: "social",
-    categoryName: "Community Management",
-    description: "Stratégie digitale et animation de communauté",
-    icon: <Facebook className="w-8 h-8" />,
-    color: "from-cyan-500 to-blue-500",
-    imageUrl: "/images/csm-taksit-social.png",
-    client: "CSM Taksit",
-    year: "2024",
-    technologies: ["Facebook", "Instagram", "Meta Ads"],
-    fullDescription: "Stratégie de contenu et community management pour CSM Taksit, avec campagnes publicitaires ciblées.",
-    link: "https://facebook.com/csmtaksit"
-  },
-  {
-    id: 5,
-    title: "EMS Algerie",
-    category: "social",
-    categoryName: "Community Management",
-    description: "Gestion des réseaux sociaux et e-réputation",
-    icon: <Instagram className="w-8 h-8" />,
-    color: "from-pink-500 to-rose-500",
-    imageUrl: "/images/ems-algerie.png",
-    client: "EMS Algérie",
-    year: "2024",
-    technologies: ["Instagram", "Facebook", "LinkedIn"],
-    fullDescription: "Gestion complète des réseaux sociaux d'EMS Algérie, avec création de contenu et stratégie d'engagement.",
-    link: "https://instagram.com/emsalgerie"
-  },
-  {
-    id: 6,
-    title: "Branding - Groupe Rahmani",
-    category: "design",
-    categoryName: "Design Graphique",
-    description: "Identité visuelle complète du groupe",
-    icon: <PenTool className="w-8 h-8" />,
-    color: "from-green-500 to-emerald-500",
-    imageUrl: "/images/branding-rahmani.png",
-    client: "Groupe Rahmani",
-    year: "2024",
-    technologies: ["Illustrator", "Photoshop", "Figma"],
-    fullDescription: "Création de l'identité visuelle complète du Groupe Rahmani : logo, charte graphique, papeterie et supports marketing."
-  },
-  {
-    id: 7,
-    title: "Design Packaging - CSM",
-    category: "design",
-    categoryName: "Design Graphique",
-    description: "Packaging produits et emballages",
-    icon: <Package className="w-8 h-8" />,
-    color: "from-lime-500 to-green-500",
-    imageUrl: "/images/packaging-csm.png",
-    client: "CSM Taksit",
-    year: "2024",
-    technologies: ["Illustrator", "InDesign"],
-    fullDescription: "Design de packaging pour la gamme de produits CSM Taksit, avec un design moderne et attractif."
-  },
-  {
-    id: 8,
-    title: "Affiches Publicitaires",
-    category: "design",
-    categoryName: "Design Graphique",
-    description: "Création d'affiches et flyers",
-    icon: <Layout className="w-8 h-8" />,
-    color: "from-yellow-500 to-orange-500",
-    imageUrl: "/images/affiches.png",
-    client: "EMS Algérie",
-    year: "2024",
-    technologies: ["Photoshop", "Illustrator"],
-    fullDescription: "Création d'affiches publicitaires, flyers et supports print pour les campagnes marketing."
-  },
-  {
-    id: 9,
-    title: "UI/UX - Plateforme i-doc",
-    category: "design",
-    categoryName: "Design Graphique",
-    description: "Design d'interface utilisateur",
-    icon: <Award className="w-8 h-8" />,
-    color: "from-purple-500 to-indigo-500",
-    imageUrl: "/images/ui-ux-idoc.png",
-    client: "i-doc",
-    year: "2024",
-    technologies: ["Figma", "Adobe XD"],
-    fullDescription: "Design UI/UX complet pour la plateforme médicale i-doc, avec une interface claire et intuitive pour les médecins et patients."
-  },
-  {
-    id: 10,
-    title: "Campagne Publicitaire EMS",
-    category: "marketing",
-    categoryName: "Marketing Digital",
-    description: "Campagne Facebook & Instagram Ads",
-    icon: <TrendingUp className="w-8 h-8" />,
-    color: "from-red-500 to-rose-500",
-    imageUrl: "/images/campagne-ems.png",
-    client: "EMS Algérie",
-    year: "2024",
-    technologies: ["Meta Ads", "Google Ads", "Analytics"],
-    fullDescription: "Campagne publicitaire sur Facebook et Instagram pour promouvoir les services d'EMS Algérie. Résultats : +200% d'engagement et +150% de leads.",
-    link: "https://facebook.com/emsalgerie"
-  }
-];
-
+    {
+      id: 1,
+      title: "Store B2B - CSM Taksit",
+      category: "web",
+      categoryName: "Développement Web",
+      description: "Plateforme B2B avec système de paiement en plusieurs fois",
+      icon: <ShoppingBag className="w-8 h-8" />,
+      color: "from-blue-500 to-cyan-500",
+      imageUrl: "/images/store-b2b.jpg",
+      client: "CSM Taksit",
+      year: "2024",
+      technologies: ["Next.js", "Node.js", "MongoDB", "Stripe"],
+      fullDescription: "Plateforme e-commerce B2B complète permettant aux professionnels d'acheter en ligne avec un système de paiement échelonné (taksit). Interface intuitive et sécurisée.",
+      link: "https://b2b.csmtaksit.dz/"
+    },
+    {
+      id: 2,
+      title: "Plateforme Médicale i-doc",
+      category: "web",
+      categoryName: "Développement Web",
+      description: "Plateforme de gestion médicale pour professionnels de santé",
+      icon: <Stethoscope className="w-8 h-8" />,
+      color: "from-purple-500 to-pink-500",
+      imageUrl: "/images/i-doc.png",
+      client: "i-doc",
+      year: "2024",
+      technologies: ["React", "Laravel", "MySQL", "WebRTC"],
+      fullDescription: "Plateforme médicale complète pour la gestion des patients, rendez-vous, dossiers médicaux et téléconsultation.",
+      link: "https://i-doc.com"
+    },
+    {
+      id: 3,
+      title: "Groupe Rahmani",
+      category: "social",
+      categoryName: "Community Management",
+      description: "Gestion des réseaux sociaux et stratégie de contenu",
+      icon: <Users className="w-8 h-8" />,
+      color: "from-blue-600 to-blue-800",
+      imageUrl: "/images/groupe-rahmani.png",
+      client: "Groupe Rahmani",
+      year: "2024",
+      technologies: ["Facebook", "Instagram", "LinkedIn"],
+      fullDescription: "Gestion complète des réseaux sociaux du Groupe Rahmani : création de contenu, planification, community management et reporting.",
+      link: "https://facebook.com/grouperahmani"
+    },
+    {
+      id: 4,
+      title: "CSM Taksit - Social Media",
+      category: "social",
+      categoryName: "Community Management",
+      description: "Stratégie digitale et animation de communauté",
+      icon: <Facebook className="w-8 h-8" />,
+      color: "from-cyan-500 to-blue-500",
+      imageUrl: "/images/csm-taksit-social.png",
+      client: "CSM Taksit",
+      year: "2024",
+      technologies: ["Facebook", "Instagram", "Meta Ads"],
+      fullDescription: "Stratégie de contenu et community management pour CSM Taksit, avec campagnes publicitaires ciblées.",
+      link: "https://facebook.com/csmtaksit"
+    },
+    {
+      id: 5,
+      title: "EMS Algerie",
+      category: "social",
+      categoryName: "Community Management",
+      description: "Gestion des réseaux sociaux et e-réputation",
+      icon: <Instagram className="w-8 h-8" />,
+      color: "from-pink-500 to-rose-500",
+      imageUrl: "/images/ems-algerie.png",
+      client: "EMS Algérie",
+      year: "2024",
+      technologies: ["Instagram", "Facebook", "LinkedIn"],
+      fullDescription: "Gestion complète des réseaux sociaux d'EMS Algérie, avec création de contenu et stratégie d'engagement.",
+      link: "https://instagram.com/emsalgerie"
+    },
+    {
+      id: 6,
+      title: "Branding - Groupe Rahmani",
+      category: "design",
+      categoryName: "Design Graphique",
+      description: "Identité visuelle complète du groupe",
+      icon: <PenTool className="w-8 h-8" />,
+      color: "from-green-500 to-emerald-500",
+      imageUrl: "/images/branding-rahmani.png",
+      client: "Groupe Rahmani",
+      year: "2024",
+      technologies: ["Illustrator", "Photoshop", "Figma"],
+      fullDescription: "Création de l'identité visuelle complète du Groupe Rahmani : logo, charte graphique, papeterie et supports marketing."
+    },
+    {
+      id: 7,
+      title: "Design Packaging - CSM",
+      category: "design",
+      categoryName: "Design Graphique",
+      description: "Packaging produits et emballages",
+      icon: <Package className="w-8 h-8" />,
+      color: "from-lime-500 to-green-500",
+      imageUrl: "/images/packaging-csm.png",
+      client: "CSM Taksit",
+      year: "2024",
+      technologies: ["Illustrator", "InDesign"],
+      fullDescription: "Design de packaging pour la gamme de produits CSM Taksit, avec un design moderne et attractif."
+    },
+    {
+      id: 8,
+      title: "Affiches Publicitaires",
+      category: "design",
+      categoryName: "Design Graphique",
+      description: "Création d'affiches et flyers",
+      icon: <Layout className="w-8 h-8" />,
+      color: "from-yellow-500 to-orange-500",
+      imageUrl: "/images/affiches.png",
+      client: "EMS Algérie",
+      year: "2024",
+      technologies: ["Photoshop", "Illustrator"],
+      fullDescription: "Création d'affiches publicitaires, flyers et supports print pour les campagnes marketing."
+    },
+    {
+      id: 9,
+      title: "UI/UX - Plateforme i-doc",
+      category: "design",
+      categoryName: "Design Graphique",
+      description: "Design d'interface utilisateur",
+      icon: <Award className="w-8 h-8" />,
+      color: "from-purple-500 to-indigo-500",
+      imageUrl: "/images/ui-ux-idoc.png",
+      client: "i-doc",
+      year: "2024",
+      technologies: ["Figma", "Adobe XD"],
+      fullDescription: "Design UI/UX complet pour la plateforme médicale i-doc, avec une interface claire et intuitive pour les médecins et patients."
+    },
+    {
+      id: 10,
+      title: "Campagne Publicitaire EMS",
+      category: "marketing",
+      categoryName: "Marketing Digital",
+      description: "Campagne Facebook & Instagram Ads",
+      icon: <TrendingUp className="w-8 h-8" />,
+      color: "from-red-500 to-rose-500",
+      imageUrl: "/images/campagne-ems.png",
+      client: "EMS Algérie",
+      year: "2024",
+      technologies: ["Meta Ads", "Google Ads", "Analytics"],
+      fullDescription: "Campagne publicitaire sur Facebook et Instagram pour promouvoir les services d'EMS Algérie. Résultats : +200% d'engagement et +150% de leads.",
+      link: "https://facebook.com/emsalgerie"
+    }
+  ];
 
   // Filtrage
   const filteredProjects = filterCategory === "all" 
@@ -583,17 +583,34 @@ export const Portfolio = () => {
                       </div>
                     )}
 
-                    <Link href="/contact" onClick={closeModal}>
-                      <GlowingButton
-                        as="div"
-                        className="w-full py-2.5 text-center text-sm"
-                      >
-                        <span className="flex items-center justify-center gap-2">
-                          <Send className="w-4 h-4" />
-                          Demander un devis
-                        </span>
-                      </GlowingButton>
-                    </Link>
+                    {/* Boutons - Avec lien conditionnel */}
+                    <div className="flex flex-col gap-3 mt-4">
+                      {/* Lien vers le projet (s'affiche seulement si le projet a un lien) */}
+                      {selectedProject.link && (
+                        <a
+                          href={selectedProject.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full py-2.5 text-center text-sm rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          Visiter le site web
+                        </a>
+                      )}
+                      
+                      {/* Bouton Devis */}
+                      <Link href="/contact" onClick={closeModal}>
+                        <Button
+                          
+                          className="w-full py-2.5 text-center text-sm"
+                        >
+                          <span className="flex items-center justify-center gap-2">
+                            <Send className="w-4 h-4" />
+                            Demander un devis
+                          </span>
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </motion.div>
               </div>
@@ -611,12 +628,11 @@ export const Portfolio = () => {
               Discutons de votre idée et créons quelque chose ensemble
             </p>
             <Link href="/contact">
-              <GlowingButton
-                as="div"
+              <button
                 className="inline-flex px-6 py-2"
               >
                 Contactez-nous
-              </GlowingButton>
+              </button>
             </Link>
           </div>
         </div>

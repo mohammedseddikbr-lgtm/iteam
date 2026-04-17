@@ -3,9 +3,16 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronRight, Rocket, Video } from 'lucide-react';
+import { ArrowRight, ChevronRight, Rocket, Headphones, MessageCircle } from 'lucide-react';
 
 export const HeroSection = () => {
+  // رقم WhatsApp مع رمز الدولة (بدون + أو 00)
+  const whatsappNumber = "213796779790";
+  // رسالة افتراضية للتواصل
+  const whatsappMessage = "Bonjour, je souhaite discuter avec un conseiller pour mon projet digital.";
+  // رابط WhatsApp
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+
   return (
     <section className="relative pt-24 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 animate-fadeIn">
       {/* Background */}
@@ -43,7 +50,7 @@ export const HeroSection = () => {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center md:pt-12 animate-slideUp delay-600">
-            {/* Primary CTA */}
+            {/* Primary CTA - Redirection vers page contact */}
             <Link 
               href="/contact"
               className="cursor-pointer relative px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25 md:px-10 md:py-5 text-lg shadow-2xl shadow-blue-500/25 hover:scale-105 active:scale-95 group"
@@ -55,23 +62,24 @@ export const HeroSection = () => {
               </span>
             </Link>
 
-            {/* Secondary CTA */}
-            <Link
-              href="/contact"
-              className="group max-md:w-full md:px-10 py-5 text-lg rounded-2xl bg-gradient-to-r from-white/0 via-white/5 to-white/0 backdrop-blur-xl border border-white/20 transition-all duration-300 hover:border-cyan-500/50 hover:scale-105 active:scale-95"
+            {/* Secondary CTA - WhatsApp direct */}
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group max-md:w-full md:px-10 py-5 text-lg rounded-2xl bg-gradient-to-r from-white/0 via-white/5 to-white/0 backdrop-blur-xl border border-white/20 transition-all duration-300 hover:border-green-500/50 hover:scale-105 active:scale-95 cursor-pointer inline-flex items-center justify-center"
             >
               <span className="flex items-center justify-center gap-3">
-                <Video className="w-6 h-6 text-cyan-400" />
-                Consultation Gratuite
-                <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-2" />
+                <Headphones className="w-6 h-6 text-green-400" />
+                Discuter avec un Conseiller
+                <MessageCircle className="w-5 h-5 text-green-400 transition-transform group-hover:translate-x-2" />
               </span>
-            </Link>
+            </a>
           </div>
         </div>
       </div>
     </section>
   );
 };
-
 
 export default HeroSection;

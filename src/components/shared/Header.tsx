@@ -110,7 +110,6 @@ export default function Header() {
               <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
-
           {/* Mobile Menu Button - Toggles between Menu and X */}
           <div className="lg:hidden">
             <button
