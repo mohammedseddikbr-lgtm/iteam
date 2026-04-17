@@ -32,14 +32,7 @@ export const metadata: Metadata = {
     description: "Agence digitale spécialisée en sites web, design, marketing et production audiovisuelle.",
     siteName: "ITEAM",
     url: "https://iteam.digital/",
-    images: [
-      {
-        url: "/images/seddik.jfif",
-        width: 1200,
-        height: 630,
-        alt: "ITEAM"
-      }
-    ],
+
     locale: "fr_FR",
     type: "website",
   },
