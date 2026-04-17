@@ -392,7 +392,7 @@ export const Portfolio = () => {
       imageUrl: "/images/campagne-ems.png",
       client: "EMS Algérie",
       year: "2024",
-      technologies: ["Meta Ads Manager", "Google Ads", "Google Analytics", "Hotjar", "SEMrush"],
+      technologies: ["Meta Ads Manager","Google Analytics"],
       fullDescription: "Campagne publicitaire sur Facebook et Instagram pour promouvoir les services d'EMS Algérie. Stratégie d'audience ciblée, créations publicitaires A/B testées, optimisation continue et reporting détaillé.",
       link: "https://www.facebook.com/reel/3060308457474091",
       features: [
