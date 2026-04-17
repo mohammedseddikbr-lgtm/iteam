@@ -1,6 +1,7 @@
+// MobileHeaderMenu.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -20,6 +21,7 @@ import { cn } from "@/lib/utils";
 const liensNavigation = [
   { nom: "Accueil", href: "/", icone: <Home className="w-4 h-4" /> },
   { nom: "Services", href: "/services", icone: <Star className="w-4 h-4" /> },
+  { nom: "Portfolio", href: "/portfolio", icone: <Star className="w-4 h-4" /> },
   { nom: "À Propos", href: "/about", icone: <Users className="w-4 h-4" /> },
   { nom: "Contact", href: "/contact", icone: <PhoneCall className="w-4 h-4" /> },
 ];
@@ -30,23 +32,45 @@ const infosContact = [
   { icone: <MapPin className="w-4 h-4" />, texte: "Alger, Algérie", href: "#" },
 ];
 
-export default function MobileHeaderMenu({ onClose }: { onClose?: () => void }) {
-  const [isOpen, setIsOpen] = useState(false);
+interface MobileHeaderMenuProps {
+  isOpen?: boolean;
+  onOpen?: () => void;
+  onClose?: () => void;
+}
 
+export default function MobileHeaderMenu({ isOpen: externalIsOpen, onOpen, onClose }: MobileHeaderMenuProps) {
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  
+  // Use external state if provided, otherwise use internal state
+  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+  
+  const handleOpen = () => {
+    if (onOpen) {
+      onOpen();
+    } else {
+      setInternalIsOpen(true);
+    }
+  };
+  
   const handleClose = () => {
-    setIsOpen(false);
-    onClose?.();
+    if (onClose) {
+      onClose();
+    } else {
+      setInternalIsOpen(false);
+    }
   };
 
   return (
     <>
+      {/* Menu Button */}
       <button
-        onClick={() => setIsOpen(true)}
-        className="lg:hidden p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+        onClick={handleOpen}
+        className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
         aria-label="Ouvrir le menu"
       >
         <Menu className="w-6 h-6 text-white" />
       </button>
+      
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -102,4 +126,3 @@ export default function MobileHeaderMenu({ onClose }: { onClose?: () => void }) 
     </>
   );
 }
-
