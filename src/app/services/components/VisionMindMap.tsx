@@ -29,7 +29,6 @@ import {
   Grid,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { GlowingButton } from "@/components/ui/GlowingButton";
 
 interface ServiceNode {
   id: number;
@@ -361,7 +360,7 @@ export const ServicesMindMap = () => {
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-950/5 via-transparent to-cyan-950/5">
         {/* Mobile-optimized particles */}
-        <div className="absolute inset-0 pointer-events-none">
+        {/* <div className="absolute inset-0 pointer-events-none">
           {[...Array(isMobile ? 8 : 15)].map((_, i) => (
             <motion.div
               key={i}
@@ -383,7 +382,7 @@ export const ServicesMindMap = () => {
               }}
             />
           ))}
-        </div>
+        </div> */}
       </div>
 
       {/* Main Container */}
@@ -642,12 +641,13 @@ export const ServicesMindMap = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <GlowingButton className="w-full py-4">
-                      <span className="flex items-center justify-center gap-3">
+                    <button className="relative w-full py-4 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25">
+                      <span className="relative z-10 flex items-center justify-center gap-3">
                         Start Your {service.title} Project
                         <ArrowRight className="w-5 h-5" />
                       </span>
-                    </GlowingButton>
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </button>
                   </motion.div>
                 </div>
               );

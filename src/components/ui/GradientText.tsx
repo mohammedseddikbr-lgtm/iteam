@@ -1,21 +1,16 @@
-// components/ui/GradientText.tsx (Updated)
+// src/components/ui/GradientText.tsx
 "use client";
 
-import { cn } from "@/lib/utils";
+import { ReactNode } from 'react';
 
 interface GradientTextProps {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
 }
 
-export const GradientText = ({ children, className }: GradientTextProps) => {
+export const GradientText = ({ children, className = "" }: GradientTextProps) => {
   return (
-    <span className={cn(
-      "bg-linear-to-r from-blue-400 via-cyan-400 to-blue-500",
-      "bg-clip-text text-transparent",
-      "animate-gradient bg-300%",
-      className
-    )}>
+    <span className={`bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent ${className}`}>
       {children}
     </span>
   );

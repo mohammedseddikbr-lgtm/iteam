@@ -1,8 +1,6 @@
-// components/pages/components/ServiceCard.tsx
+// components/pages/components/ServiceCard.tsx (optimized)
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ServiceCardProps {
@@ -14,6 +12,7 @@ interface ServiceCardProps {
   listeFonctionnalites?: { texte: string; icone: React.ReactNode }[];
   index: number;
 }
+
 export const ServiceCard = ({
   icone,
   titre,
@@ -24,21 +23,14 @@ export const ServiceCard = ({
   index
 }: ServiceCardProps) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ y: -10 }}
-      className="relative group h-full flex flex-col" // ← اضفنا h-full و flex-col
-    >
+    <div className="relative group h-full flex flex-col">
       {/* Effet de lueur */}
       <div className={cn(
         "absolute -inset-0.5 rounded-3xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-500",
-        degrade.replace("from-", "from-").replace("to-", "to-")
+        degrade
       )} />
 
-      <div className="relative p-8 rounded-3xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/10 group-hover:border-white/30 transition-all duration-300 flex flex-col flex-1">
+      <div className="relative p-8 rounded-3xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/10 group-hover:border-white/30 transition-all duration-300 flex flex-col flex-1 hover:-translate-y-2">
         {/* Icône */}
         <div className="mb-8">
           <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 flex items-center justify-center">
@@ -53,7 +45,7 @@ export const ServiceCard = ({
 
         {/* Titre & Description */}
         <h3 className="text-2xl font-bold text-white mb-4">{titre}</h3>
-        <p className="text-gray-400 leading-relaxed mb-8 flex-1">{description}</p> {/* ← flex-1 هنا لتعبئة المساحة */}
+        <p className="text-gray-400 leading-relaxed mb-8 flex-1">{description}</p>
 
         {/* Fonctionnalités */}
         <div className="space-y-3 mb-8">
@@ -83,6 +75,6 @@ export const ServiceCard = ({
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
