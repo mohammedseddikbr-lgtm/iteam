@@ -5,6 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import ScrollTopButton from "./ScrollTopButton";
 
+// Lucide Icons
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Phone,
+  Mail,
+  MapPin,
+} from "lucide-react";
+
 export default function Footer() {
   const services = [
     "Création de Sites Web",
@@ -31,17 +41,17 @@ export default function Footer() {
 
   const liensSociaux = [
     {
-      icone: "📘",
+      icon: Facebook,
       href: "https://facebook.com/iteam.digital",
       label: "Facebook",
     },
     {
-      icone: "📷",
+      icon: Instagram,
       href: "https://instagram.com/iteam.dz",
       label: "Instagram",
     },
     {
-      icone: "💼",
+      icon: Linkedin,
       href: "https://linkedin.com/company/iteam-digital/",
       label: "LinkedIn",
     },
@@ -49,17 +59,17 @@ export default function Footer() {
 
   const infosContact = [
     {
-      icone: "📞",
+      icon: Phone,
       texte: "+213 549 402 461",
       href: "tel:+213549402461",
     },
     {
-      icone: "📧",
+      icon: Mail,
       texte: "contact@iteam.digital",
       href: "mailto:contact@iteam.digital",
     },
     {
-      icone: "📍",
+      icon: MapPin,
       texte: "25 Boulevard Ouaked Ahmed, Cheraga 16002",
       href: "https://maps.google.com/?q=25+Boulevard+Ouaked+Ahmed+Cheraga",
     },
@@ -69,7 +79,7 @@ export default function Footer() {
     <footer className="relative bg-gradient-to-b from-gray-900 via-blue-900/30 to-gray-900 border-t border-white/10">
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
 
-      <div className="relative z-10 container mx-auto px-6 py-16">
+      <div className="relative z-10 container mx-auto px-6 py-8">
         <div className="grid lg:grid-cols-4 gap-10 mb-16">
           {/* Entreprise */}
           <div className="space-y-6">
@@ -90,20 +100,21 @@ export default function Footer() {
             </p>
 
             <div className="flex gap-4">
-              {liensSociaux.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.label}
-                  className="p-2 rounded-lg bg-white/5 hover:bg-blue-500/20 border border-white/10 hover:border-blue-500/30 transition-all duration-300 group"
-                >
-                  <div className="text-gray-400 group-hover:text-white text-xl">
-                    {social.icone}
-                  </div>
-                </a>
-              ))}
+              {liensSociaux.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className="p-2 rounded-lg bg-white/5 hover:bg-blue-500/20 border border-white/10 hover:border-blue-500/30 transition-all duration-300 group"
+                  >
+                    <Icon className="w-5 h-5 text-gray-400 group-hover:text-white" />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
@@ -153,48 +164,23 @@ export default function Footer() {
               Contactez-nous ➜
             </h3>
             <div className="space-y-4">
-              {infosContact.map((info) => (
-                <div key={info.texte} className="flex gap-3">
-                  <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-xl">
-                    {info.icone}
+              {infosContact.map((info) => {
+                const Icon = info.icon;
+                return (
+                  <div key={info.texte} className="flex gap-3">
+                    <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500/20 to-cyan-500/20">
+                      <Icon className="w-5 h-5 text-white" />
+                    </div>
+                    <a
+                      href={info.href}
+                      className="text-gray-400 hover:text-cyan-400"
+                    >
+                      {info.texte}
+                    </a>
                   </div>
-                  <a
-                    href={info.href}
-                    className="text-gray-400 hover:text-cyan-400"
-                  >
-                    {info.texte}
-                  </a>
-                </div>
-              ))}
+                );
+              })}
             </div>
-          </div>
-        </div>
-
-        {/* Newsletter */}
-        <div className="mb-12 p-8 rounded-2xl bg-gradient-to-r from-blue-900/30 to-cyan-900/30 backdrop-blur-sm border border-white/10">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-2">
-                Restez Informé
-              </h3>
-              <p className="text-gray-400">
-                Abonnez-vous à notre newsletter pour les dernières actualités et
-                insights.
-              </p>
-            </div>
-            <form className="md:flex flex-col gap-2">
-              <input
-                type="email"
-                placeholder="Votre adresse email"
-                className="flex-1 px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-colors"
-              />
-              <button
-                type="submit"
-                className="px-6 py-3 max-md:mt-4 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold hover:shadow-blue-500/25 hover:shadow-xl transition-all duration-300"
-              >
-                S'abonner
-              </button>
-            </form>
           </div>
         </div>
 
@@ -202,8 +188,7 @@ export default function Footer() {
         <div className="pt-8 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-gray-500 text-sm">
-              © 2026 ITEAM Solutions Digitales. Tous
-              droits réservés.
+              © 2026 ITEAM Solutions Digitales. Tous droits réservés.
             </div>
 
             <div className="flex flex-wrap gap-6">
