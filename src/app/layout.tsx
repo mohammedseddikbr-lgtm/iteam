@@ -32,7 +32,6 @@ export const metadata: Metadata = {
     description: "Agence digitale spécialisée en sites web, design, marketing et production audiovisuelle.",
     siteName: "ITEAM",
     url: "https://iteam.digital/",
-
     locale: "fr_FR",
     type: "website",
   },
@@ -64,7 +63,7 @@ export default function RootLayout({
             "@type": "Organization",
             "name": "ITEAM",
             "url": "https://iteam.digital/",
-            "logo": "https://iteam.digital/images/seddik.jfif",
+            "logo": "https://iteam.digital/images/logo.png",
             "sameAs": [
               "https://www.linkedin.com/",
               "https://twitter.com/"
