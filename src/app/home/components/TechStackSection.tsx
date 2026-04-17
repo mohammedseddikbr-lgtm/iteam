@@ -112,3 +112,5 @@ const GrilleTechnologies = ({ techStack }: GrilleTechnologiesProps) => {
     </div>
   );
 };
+
+export default TechStackSection;

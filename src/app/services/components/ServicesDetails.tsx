@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, ArrowRight, Award, Zap, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GradientText } from "@/components/ui/GradientText";
-import { GlowingButton } from "@/components/ui/GlowingButton";
+
 
 interface ServiceNode {
   id: number;
@@ -131,12 +131,13 @@ export const ServicesDetails = ({
                       </div>
                       
                       <div className="mt-8 pt-8 border-t border-white/10">
-                        <GlowingButton className="px-8 py-4">
-                          <span className="flex items-center gap-3">
+                        <button className="relative px-8 py-4 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25">
+                          <span className="relative z-10 flex items-center gap-3">
                             Commencer avec {service.title}
                             <ArrowRight className="w-5 h-5" />
                           </span>
-                        </GlowingButton>
+                          <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        </button>
                       </div>
                     </>
                   );

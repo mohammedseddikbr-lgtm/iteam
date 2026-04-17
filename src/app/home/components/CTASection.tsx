@@ -4,7 +4,6 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Calendar, Mail, ChevronRight, Clock } from "lucide-react";
 import { GradientText } from "@/components/ui/GradientText";
-import { GlowingButton } from "@/components/ui/GlowingButton";
 
 export const CTASection = () => {
   return (
@@ -83,13 +82,14 @@ const EnTeteSection = () => {
 const ActionsCTA = () => {
   return (
     <div className="flex flex-col sm:flex-row gap-6 justify-center">
-      <GlowingButton className="md:px-10 p-2 md:py-5 text-lg font-semibold shadow-2xl shadow-blue-500/25">
-        <span className="flex text-xs items-center gap-3">
+      <button className="relative md:px-10 p-2 md:py-5 text-lg font-semibold rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25 shadow-2xl shadow-blue-500/25">
+        <span className="relative z-10 flex text-xs items-center gap-3">
           <Calendar className="hidden md:flex w-6 h-6" />
           Réserver un Appel Stratégique 
           <ChevronRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
         </span>
-      </GlowingButton>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      </button>
       
       <button className="md:px-10 md:py-5 p-3 text-lg rounded-xl text-center md:rounded-2xl bg-gradient-to-r from-white/0 via-white/5 to-white/0 backdrop-blur-xl border border-white/20 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all duration-300 group">
         <span className="flex text-xs justify-center items-center gap-3">
@@ -110,3 +110,6 @@ const TempsReponse = () => {
     </p>
   );
 };
+
+
+export default CTASection;

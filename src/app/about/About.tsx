@@ -44,7 +44,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GradientText } from "@/components/ui/GradientText";
-import { GlowingButton } from "@/components/ui/GlowingButton";
 import { TechBackground } from "@/components/ui/TechBackground";
 
 // ==================== INTERFACES ====================
@@ -1262,13 +1261,16 @@ export const About = () => {
                   Faites partie d'une équipe qui façonne l'avenir de l'innovation digitale.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <GlowingButton 
+                  <button 
                     onClick={() => setIsModalOpen(true)}
-                    className="px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold"
+                    className="relative px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25"
                   >
-                    Rejoindre Nous
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </GlowingButton>
+                    <span className="relative z-10 flex items-center gap-2">
+                      Rejoindre Nous
+                      <ArrowRight className="ml-2 w-5 h-5" />
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </button>
                   <button className="px-6 md:px-8 py-3 md:py-4 text-base md:text-lg rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300">
                     Contactez Notre Équipe
                   </button>
