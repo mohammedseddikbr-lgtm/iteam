@@ -16,10 +16,10 @@ export default function Home() {
     <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-gray-900 text-white overflow-hidden">
       <ClientBackground />
       <HeroSection />
-      <TechStackSection />
-      <PacksSection />
       <ServciesSection />
+      <PacksSection />
       <ProcessTimelineSection />
+      <TechStackSection />
       {/* <ReviewsSection /> */}
       <CTASection />
     </div>

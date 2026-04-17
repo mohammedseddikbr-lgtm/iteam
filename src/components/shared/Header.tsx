@@ -15,7 +15,11 @@ import {
   Users,
   PhoneCall,
   X,
-  Menu
+  Menu,
+  LayoutGrid,
+  Briefcase,
+  Info,
+  MessageCircle
 } from "lucide-react";
 
 export default function Header() {
@@ -30,10 +34,10 @@ export default function Header() {
 
   const liensNavigation = [
     { nom: "Accueil", href: "/", icone: <Home className="w-4 h-4" /> },
-    { nom: "Services", href: "/services", icone: <Star className="w-4 h-4" /> },
-    { nom: "Portfolio", href: "/portfolio", icone: <Star className="w-4 h-4" /> },
-    { nom: "À Propos", href: "/about", icone: <Users className="w-4 h-4" /> },
-    { nom: "Contact", href: "/contact", icone: <PhoneCall className="w-4 h-4" /> },
+    { nom: "Services", href: "/services", icone: <LayoutGrid className="w-4 h-4" /> },
+    { nom: "Portfolio", href: "/portfolio", icone: <Briefcase className="w-4 h-4" /> },
+    { nom: "À Propos", href: "/about", icone: <Info className="w-4 h-4" /> },
+    { nom: "Contact", href: "/contact", icone: <MessageCircle className="w-4 h-4" /> },
   ];
 
   const infosContact = [
@@ -52,7 +56,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed left-1/2 top-4 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-7xl rounded-2xl  px-4 md:px-8 py-3 md:py-4 bg-gradient-to-r from-gray-900/80 to-blue-900/80 backdrop-blur-xl shadow-2xl border border-white/10">
+      <header className="fixed left-1/2 top-4 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-7xl rounded-2xl px-4 md:px-8 py-3 md:py-4 bg-gradient-to-r from-gray-900/80 to-blue-900/80 backdrop-blur-xl shadow-2xl border border-white/10">
         <div className="flex items-center justify-between">
           {/* Logo - Left side */}
           <Link href="/" className="flex items-center shrink-0">
@@ -66,38 +70,20 @@ export default function Header() {
             />
           </Link>
 
-          {/* Desktop Navigation - Center */}
+          {/* Desktop Navigation - Center with Icons */}
           <nav className="hidden lg:flex items-center gap-8">
-            <Link 
-              href="/" 
-              className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
-            >
-              Accueil
-            </Link>
-            <Link 
-              href="/services" 
-              className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
-            >
-              Services
-            </Link>
-            <Link 
-              href="/Portfolio" 
-              className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
-            >
-              Portfolio
-            </Link>
-            <Link 
-              href="/about" 
-              className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
-            >
-              À Propos
-            </Link>
-            <Link 
-              href="/contact" 
-              className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
-            >
-              Contact
-            </Link>
+            {liensNavigation.map((lien) => (
+              <Link 
+                key={lien.href}
+                href={lien.href} 
+                className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200 font-medium group"
+              >
+                <span className="text-cyan-400 group-hover:scale-110 transition-transform duration-200">
+                  {lien.icone}
+                </span>
+                <span>{lien.nom}</span>
+              </Link>
+            ))}
           </nav>
 
           {/* Desktop CTA - Right side */}
@@ -158,7 +144,9 @@ export default function Header() {
                       onClick={handleCloseMenu}
                       className="flex items-center gap-4 px-4 py-3 rounded-lg hover:bg-white/5 transition-all duration-300 group"
                     >
-                      <span className="text-cyan-400">{lien.icone}</span>
+                      <span className="text-cyan-400 group-hover:scale-110 transition-transform duration-200">
+                        {lien.icone}
+                      </span>
                       <span className="text-lg font-medium text-white">{lien.nom}</span>
                       <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all" />
                     </Link>
@@ -170,10 +158,12 @@ export default function Header() {
                     <a
                       key={idx}
                       href={info.href}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-300"
+                      className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-300 group"
                       onClick={handleCloseMenu}
                     >
-                      <div className="p-2 rounded-lg bg-white/5 text-cyan-400">{info.icone}</div>
+                      <div className="p-2 rounded-lg bg-white/5 text-cyan-400 group-hover:scale-110 transition-transform duration-200">
+                        {info.icone}
+                      </div>
                       <span>{info.texte}</span>
                     </a>
                   ))}
