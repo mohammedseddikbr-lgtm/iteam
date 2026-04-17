@@ -105,7 +105,7 @@ export default function Footer() {
           {/* Entreprise */}
           <div className="space-y-6">
             <Link href="/" className="flex justify-center">
-              <img src="images/logo.png" alt="Logo i-Team" className="w-36" />
+              <img src="/images/logo.png" alt="Logo i-Team" className="w-36" />
             </Link>
 
             <p className="text-gray-400 leading-relaxed">

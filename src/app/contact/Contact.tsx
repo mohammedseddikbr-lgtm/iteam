@@ -49,7 +49,7 @@ export const Contact = () => {
   // دالة لإرسال البيانات إلى Google Sheets
   const sendToGoogleSheets = async (data: any) => {
     try {
-      const response = await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+      await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: {
@@ -86,7 +86,7 @@ export const Contact = () => {
       
       // محاولة إرسال الإيميل إذا كان متاحاً (اختياري)
       try {
-        const emailResponse = await fetch('/api/send-email', {
+        await fetch('/api/send-email', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -547,7 +547,8 @@ export const Contact = () => {
                   </div>
 
                   <div className="pt-4">
-                    <GlowingButton
+                    <GlowingButton 
+                      as="button"
                       type="submit"
                       disabled={isSubmitting}
                       className="w-full py-4 text-lg font-semibold"

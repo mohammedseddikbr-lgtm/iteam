@@ -49,7 +49,6 @@ const stats = [
   }
 ];
 
-
 export const HeroSection = ({ heroOpacity, heroScale }: HeroSectionProps) => {
   return (
     <motion.section 
@@ -102,7 +101,6 @@ const ContenuHero = () => {
         transition={{ duration: 1, delay: 0.2 }}
         className="space-y-8"
       >
-
         <Slogan />
         <TitrePrincipal />
         <SousTitre />
@@ -169,10 +167,11 @@ const SousTitre = () => {
       className="text-xl flex flex-col space-y-2 sm:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
     >
       <span className="hidden md:inline-block text-lg">
-      Nous créons des{" "}
+        Nous créons des{" "}
       </span>
-        <span className="flex md:hidden text-white text-lg ">Nous créons des Expériences digitales Exceptionnelles       qui propulsent la croissance et transforment les entreprises.
-        </span>
+      <span className="flex md:hidden text-white text-lg ">
+        Nous créons des Expériences digitales Exceptionnelles qui propulsent la croissance et transforment les entreprises.
+      </span>
       <span className="hidden md:inline-block relative ">
         <span className="text-white text-2xl md:text-4xl font-semibold">Expériences digitales Exceptionnelles</span>
         <motion.span
@@ -182,8 +181,8 @@ const SousTitre = () => {
           transition={{ delay: 1, duration: 0.8 }}
         />
       </span>{" "}
-      <span className="hidden md:inline-block mt-4 md:mt-1  text-lg">
-      qui propulsent la croissance et transforment les entreprises.
+      <span className="hidden md:inline-block mt-4 md:mt-1 text-lg">
+        qui propulsent la croissance et transforment les entreprises.
       </span>
     </motion.p>
   );
@@ -203,20 +202,25 @@ const CTAsHero = () => {
       transition={{ delay: 0.7 }}
       className="flex flex-col sm:flex-row gap-6 justify-center items-center md:pt-12"
     >
-      <motion.button
-        onClick={handleClick}
+      {/* الزر الأول - باستخدام GlowingButton */}
+      <motion.div  
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <GlowingButton className="md:px-10 md:py-5  text-lg font-semibold shadow-2xl shadow-blue-500/25">
+        <GlowingButton 
+          as="div"
+          onClick={handleClick}
+          className="md:px-10 md:py-5 text-lg font-semibold shadow-2xl shadow-blue-500/25"
+        >
           <span className="flex items-center justify-center max-md:w-full gap-2 md:gap-3">
             <Rocket className="w-6 h-6" />
             Lancez Votre Projet
             <ArrowRight className="md:ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform" />
           </span>
         </GlowingButton>
-      </motion.button>
+      </motion.div>
 
+      {/* الزر الثاني */}
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -237,7 +241,6 @@ const CTAsHero = () => {
     </motion.div>
   );
 };
-
 
 const StatsHero = () => {
   return (
