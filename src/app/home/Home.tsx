@@ -38,7 +38,6 @@ export const Home = () => {
       <PacksSection />
       <ServicesSection />
       <ProcessTimelineSection />
-      <ReviewsSection />
       <CTASection />
     </div>
   );

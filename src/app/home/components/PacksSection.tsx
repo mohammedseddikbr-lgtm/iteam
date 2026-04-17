@@ -46,7 +46,7 @@ const packs: PackItem[] = [
   {
     nom: "STANDARD",
     icone: <Gem className="w-12 h-12" />,
-    prix: "65,000 DZD",
+    prix: "80,000 DZD",
     periode: "/mois",
     couleur: "from-purple-500 to-pink-500",
     couleurFond: "bg-gradient-to-br from-purple-500/10 to-pink-500/10",

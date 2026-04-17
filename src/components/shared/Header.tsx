@@ -14,7 +14,8 @@ import {
   Home,
   Star,
   Users,
-  PhoneCall
+  PhoneCall,
+  FolderGit2  // ← أيقونة جديدة للـ Portfolio
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -29,11 +30,12 @@ export default function Header() {
   }, []);
 
   const liensNavigation = [
-    { nom: "Accueil", href: "/", icone: <Home className="w-4 h-4" /> },
-    { nom: "Services", href: "/services", icone: <Star className="w-4 h-4" /> },
-    { nom: "À Propos", href: "/about", icone: <Users className="w-4 h-4" /> },
-    { nom: "Contact", href: "/contact", icone: <PhoneCall className="w-4 h-4" /> },
-  ];
+  { nom: "Accueil", href: "/", icone: <Home className="w-4 h-4" /> },
+  { nom: "Services", href: "/services", icone: <Star className="w-4 h-4" /> },
+  { nom: "Portfolio", href: "/Portfolio", icone: <FolderGit2 className="w-4 h-4" /> }, // ← أضف هذا
+  { nom: "À Propos", href: "/about", icone: <Users className="w-4 h-4" /> },
+  { nom: "Contact", href: "/contact", icone: <PhoneCall className="w-4 h-4" /> },
+];
 
   const infosContact = [
     { icone: <Phone className="w-4 h-4" />, texte: "+213 555 123 456", href: "tel:+213555123456" },
