@@ -41,9 +41,9 @@ export default function Header() {
   ];
 
   const infosContact = [
-    { icone: <Phone className="w-4 h-4" />, texte: "+213 555 123 456", href: "tel:+213555123456" },
-    { icone: <Mail className="w-4 h-4" />, texte: "info@iteam.dz", href: "mailto:info@iteam.dz" },
-    { icone: <MapPin className="w-4 h-4" />, texte: "Alger, Algérie", href: "#" },
+    { icone: <Phone className="w-4 h-4" />, texte: "+213 555 123 456", href: "tel:+213796779790" },
+    { icone: <Mail className="w-4 h-4" />, texte: "info@iteam.dz", href: "mailto:contact@iteam.digital" },
+    { icone: <MapPin className="w-4 h-4" />, texte: "Cheraga, Algérie", href: "https://maps.app.goo.gl/mydqqzEVQJ9xVjfg9" },
   ];
 
   const toggleMenu = () => {
